@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChatEnglish – Học tiếng Anh qua hội thoại</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ff6fb0"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;700;800&family=Be+Vietnam+Pro:wght@400;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff3f8;--card:#fff;--ink:#3d2b4f;--sub:#8d7a9f;--line:#f4d7e6;--ac:#ff6fb0;--acs:#f1e8ff;--me:#ffdcec;--ok:#16a34a;--bad:#e5484d;--hlc:#ffd0e4;--c0:#ffe0ee;--c1:#e4e6ff;--c2:#d7f5e6;--c3:#fff0c9;--c4:#ffe3d6;--c5:#d8f0fb;--sh:#f0c3d9;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1530;--card:#2b2142;--ink:#fbefff;--sub:#bba9d0;--line:#42345f;--ac:#ff7ab6;--acs:#3a2d5c;--me:#5b2c52;--hlc:rgba(255,122,182,.35);--c0:#4a2a52;--c1:#2f3560;--c2:#26493f;--c3:#5a4426;--c4:#4a2f3f;--c5:#2c4559;--sh:#120b20}}
+:root[data-theme="dark"]{--bg:#1d1530;--card:#2b2142;--ink:#fbefff;--sub:#bba9d0;--line:#42345f;--ac:#ff7ab6;--acs:#3a2d5c;--me:#5b2c52;--hlc:rgba(255,122,182,.35);--c0:#4a2a52;--c1:#2f3560;--c2:#26493f;--c3:#5a4426;--c4:#4a2f3f;--c5:#2c4559;--sh:#120b20}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg) radial-gradient(var(--line) 1.5px,transparent 1.5px) 0 0/24px 24px;color:var(--ink);font-family:"Nunito","Be Vietnam Pro",system-ui,sans-serif;display:flex;flex-direction:column;max-width:520px;margin:0 auto}
+header{display:flex;align-items:center;gap:6px;padding:10px 12px;margin:10px 12px 0;border-radius:22px;background:var(--card);box-shadow:0 4px 0 var(--sh)}
+header h1{font:800 19px "Baloo 2","Nunito",sans-serif;margin:0;flex:1;color:var(--ac);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.chip{border-radius:99px;padding:5px 10px;font-size:12px;font-weight:800;background:var(--acs);white-space:nowrap}
+.chip.on{background:var(--ac);color:#fff}
+#home{padding:16px 14px 20px;overflow:auto;flex:1}
+.hero{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.mas{font-size:46px;background:var(--card);width:76px;height:76px;border-radius:30px;display:grid;place-items:center;box-shadow:0 4px 0 var(--sh);flex:none}
+.hero h2{font:800 22px "Baloo 2",sans-serif;margin:0}
+.hero p{margin:0;color:var(--sub);font-size:14px}
+.stats{display:flex;gap:8px;margin-bottom:14px}
+.stats span{background:var(--card);border-radius:99px;padding:6px 12px;font-weight:800;font-size:13px;box-shadow:0 3px 0 var(--sh)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lesson{position:relative;text-align:left;border-radius:24px;padding:14px 12px 14px;min-height:132px;display:flex;flex-direction:column;box-shadow:0 5px 0 var(--sh);transition:transform .12s}
+.lesson:active{transform:translateY(3px);box-shadow:0 2px 0 var(--sh)}
+.lesson i{font-style:normal;font-size:32px;line-height:1}
+.lesson b{font:800 16px/1.2 "Baloo 2",sans-serif;margin-top:8px}
+.lesson span{color:var(--sub);font-size:12px;margin-top:3px}
+.lesson em{position:absolute;top:10px;right:10px;background:var(--ok);color:#fff;border-radius:50%;width:24px;height:24px;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:800}
+.c0{background:var(--c0)}.c1{background:var(--c1)}.c2{background:var(--c2)}.c3{background:var(--c3)}.c4{background:var(--c4)}.c5{background:var(--c5)}
+#chat{flex:1;overflow:auto;padding:14px;display:none;flex-direction:column;gap:12px}
+.row{display:flex;align-items:flex-end;gap:8px}
+.row.me{justify-content:flex-end}
+.av{width:36px;height:36px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:20px;flex:none;box-shadow:0 3px 0 var(--sh)}
+.b{background:var(--card);border-radius:22px 22px 22px 6px;padding:10px 14px;max-width:82%;text-align:left;box-shadow:0 3px 0 var(--sh);animation:pop .22s ease-out}
+.row.me .b{background:var(--me);border-radius:22px 22px 6px 22px}
+.en{font-weight:800;font-size:16px;line-height:1.35}
+.vi{font-size:13.5px;color:var(--sub);margin-top:2px}
+.nov .vi{display:none}
+.lv{display:inline-block;background:#a78bfa;color:#fff;font-size:10px;font-weight:800;border-radius:99px;padding:1px 8px;margin-left:6px;vertical-align:middle}
+.hl{background:linear-gradient(transparent 58%,var(--hlc) 58%);cursor:pointer}
+@keyframes pop{from{transform:scale(.9);opacity:0}}
+@media (prefers-reduced-motion:reduce){.b{animation:none}.lesson{transition:none}}
+#panel,#cz{display:none;background:var(--card);margin:0 10px 10px;border-radius:28px;padding:14px;box-shadow:0 5px 0 var(--sh)}
+.hint{font:800 14px "Baloo 2",sans-serif;margin-bottom:8px;color:var(--ac)}
+.hint i::before{content:"✨ ";font-style:normal}
+.sug{background:var(--acs);border-radius:20px;padding:12px;display:flex;gap:8px;align-items:center}
+.sug .t{flex:1}
+.round{width:44px;height:44px;border-radius:50%;background:#a78bfa;color:#fff;font-size:18px;flex:none;box-shadow:0 4px 0 #7c5fe0}
+#mic{background:var(--ac);box-shadow:0 4px 0 #d9468f}
+.round:active{transform:translateY(3px);box-shadow:none}
+.round.rec{background:var(--bad);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.1)}}
+.tag{font-size:12px;color:var(--sub);margin-top:4px}
+.acts{display:flex;gap:8px;margin-top:10px}
+.send{flex:1;background:var(--ac);color:#fff;border-radius:18px;padding:12px;font-weight:800;font-size:15px;box-shadow:0 4px 0 #d9468f}
+.send:active{transform:translateY(3px);box-shadow:none}
+.alt{width:100%;text-align:left;background:var(--bg);border-radius:16px;padding:8px 12px;margin-top:6px}
+#alts{display:none}
+.more{font-size:13px;font-weight:800;margin-top:10px;color:var(--sub)}
+#res{font-size:14px;margin-top:8px}
+#res .w.ok{color:var(--ok)}#res .w.x{color:var(--bad);text-decoration:underline wavy}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--card);padding:8px 16px;border-radius:99px;font-size:13px;font-weight:700;display:none;max-width:90%}
+#vocab{display:none;position:fixed;inset:0;background:var(--bg);z-index:5;max-width:520px;margin:0 auto;padding:16px;overflow:auto}
+#vocab h2{margin:12px 0;font:800 22px "Baloo 2",sans-serif}
+.v{background:var(--card);border-radius:18px;padding:10px 12px;margin-bottom:8px;display:flex;justify-content:space-between;gap:8px;box-shadow:0 3px 0 var(--sh)}
+.flt{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px}
+#mode{display:none;position:fixed;inset:0;background:rgba(40,20,60,.45);z-index:6;align-items:flex-end;justify-content:center}
+.sheet{background:var(--card);width:100%;max-width:520px;border-radius:28px 28px 0 0;padding:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+.sheet h3{font:800 20px "Baloo 2",sans-serif;margin:0 0 12px}
+.mb{display:block;width:100%;text-align:left;background:var(--acs);border-radius:20px;padding:14px;margin-bottom:10px;font:800 17px "Baloo 2",sans-serif;box-shadow:0 4px 0 var(--sh)}
+.mb span{display:block;font:400 12.5px Nunito,sans-serif;color:var(--sub)}
+#czIn{width:100%;font:800 17px Nunito,sans-serif;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:16px;padding:11px 14px;outline:none}
+#czIn:focus{border-color:var(--ac)}
+#czMsg{font-size:13px;margin-top:6px;color:var(--sub);min-height:18px}
+.bk{display:inline-block;min-width:70px;border-bottom:3px dashed var(--ac);text-align:center;color:var(--ac)}
+#cz .chip{padding:10px 12px}
+</style>
+</head>
+<body>
+<header>
+  <button id="back" class="chip" style="display:none" aria-label="Quay lại">‹ Về</button>
+  <h1 id="ttl">ChatEnglish 🐰</h1>
+  <button id="tv" class="chip on">🇻🇳 Dịch</button>
+  <button id="vb" class="chip">⭐ <span id="vc">0</span></button>
+</header>
+
+<div id="home"></div>
+<div id="chat" aria-live="polite"></div>
+<div id="panel">
+  <div class="hint"><i></i>Chạm mic để luyện nói</div>
+  <div class="sug">
+    <div class="t"><div class="en" id="sEn"></div><div class="vi" id="sVi"></div><div class="tag" id="sTag"></div></div>
+    <button class="round" id="spk" aria-label="Nghe">🔊</button>
+    <button class="round" id="mic" aria-label="Luyện nói">🎤</button>
+  </div>
+  <div id="res"></div>
+  <div class="acts"><button class="send" id="send">Gửi tin nhắn</button></div>
+  <button class="more" id="more">Một vài cách khác ⌄</button>
+  <div id="alts"></div>
+</div>
+<div id="cz"><div class="hint"><i></i>Điền cụm còn thiếu</div><div class="tag" id="czVi" style="margin:0 0 8px"></div><input id="czIn" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Gõ cụm từ…"><div class="acts"><button class="send" id="czOk">Kiểm tra</button><button class="chip" id="czHint">💡 Gợi ý</button><button class="chip" id="czSk">Đáp án</button></div><div id="czMsg"></div></div>
+<div id="mode"><div class="sheet"><h3 id="mT"></h3><button class="mb" data-m="chat">💬 Hội thoại<span>Đọc, nghe và luyện nói câu trả lời</span></button><button class="mb" data-m="cloze">✏️ Điền từ<span>Điền cụm cần học ở cả hai vai</span></button><button class="chip" id="mX">Đóng</button></div></div>
+<div id="toast"></div>
+<div id="vocab"><button class="chip" id="vx">‹ Đóng</button><h2>Từ vựng đã lưu</h2><div id="vl"></div></div>
+
+<script>
+/* ===== BÀI HỌC: thêm bài mới ngay trong khối này ===== */
+// Thêm bài mới: copy một khối {id,t,d,s:[...]} rồi đổi nội dung.
+// T = người kia nói (lv: A2/B1, hl: cụm gạch chân để lưu từ vựng), M = bạn nói, C = lượt bạn luyện nói + các cách khác.
+const T=(en,vi,lv,hl)=>({w:"them",en,vi,lv,hl});
+const M=(en,vi)=>({w:"me",en,vi});
+const C=(en,vi,tag,...alts)=>({c:1,en,vi,tag,alts:alts.map(([en,vi])=>({en,vi}))});
+const L=[
+{id:1,t:"Nhớ nhau",d:"Nhắn tin tán tỉnh · A2–B1",s:[
+ T("I miss you","em nhớ chị rồi","A2",["miss you"]),
+ T("Why aren't you replying?","sao ơ rep","A2",["replying"]),
+ T("Can I pick you up tonight and kiss your cheek?","tối đón cho thơm má ơ?","B1",["pick you up"]),
+ C("What if I don't let you? :))","Không cho thì sao? :))","Hơi trêu, flirt, đúng vibe nhất.",["Sure, but only if you bring snacks.","Được, nhưng phải mang đồ ăn vặt."],["I'm not sure. Maybe I'm busy tonight.","Chưa chắc nữa. Tối nay có thể chị bận."],["I miss you too. Come pick me up.","Chị cũng nhớ em. Qua đón chị đi."]),
+ T("Then I'll steal one anyway.","thế em vẫn trộm một cái.","B1",["steal"])]},
+{id:2,t:"Gọi cà phê",d:"Quán cà phê · A1–A2",s:[
+ T("Hi! What can I get for you?","Chào bạn! Bạn muốn dùng gì?","A2",["What can I get for you"]),
+ C("Can I have a latte, please?","Cho mình một ly latte nhé?","Lịch sự và tự nhiên.",["I'd like an iced coffee.","Mình muốn một ly cà phê đá."],["Just a small black coffee, please.","Chỉ một ly cà phê đen nhỏ thôi."]),
+ T("Sure. Would you like it hot or iced?","Được ạ. Bạn muốn nóng hay đá?","A2",["hot or iced"]),
+ C("Iced, please. And no sugar.","Đá nhé. Và không đường.","Nói rõ yêu cầu.",["Hot, please. Thanks!","Nóng nhé. Cảm ơn!"]),
+ T("That's five dollars. Cash or card?","Năm đô ạ. Tiền mặt hay thẻ?","A2",["Cash or card"]),
+ C("Card, please.","Thẻ nhé.","Ngắn gọn là đủ.",["I'll pay by card.","Mình trả bằng thẻ."])]},
+{id:3,t:"Làm quen bạn mới",d:"Gặp lần đầu · A2–B1",s:[
+ T("Hey, I don't think we've met. I'm Sam.","Chào, hình như mình chưa gặp. Mình là Sam.","B1",["we've met"]),
+ C("Nice to meet you, Sam! I'm new here.","Rất vui được gặp bạn, Sam! Mình mới đến đây.","Câu chào chuẩn.",["Hi Sam! I just moved to the city.","Chào Sam! Mình mới chuyển đến thành phố."]),
+ T("Cool! What do you do for fun?","Hay quá! Bạn thích làm gì lúc rảnh?","A2",["for fun"]),
+ C("I love hiking and trying new food.","Mình thích đi bộ đường dài và thử món mới.","Chia sẻ sở thích.",["Mostly I watch movies at home.","Chủ yếu mình xem phim ở nhà."]),
+ T("Same! We should hang out sometime.","Giống mình! Hôm nào đi chơi nhé.","B1",["hang out"])]},
+{id:4,t:"Chào hỏi như người bản xứ",d:"What's up, long time no see · A2",s:[
+ T("Hey! What's up?","Ê! Dạo này sao rồi?","A2",["What's up"]),
+ C("Not much. How about you?","Không có gì nhiều. Còn bạn?","Câu trả lời quen thuộc nhất.",["Just chilling. You?","Đang thư giãn thôi. Còn bạn?"],["Pretty good, thanks!","Khá ổn, cảm ơn!"]),
+ T("Same here. Long time no see!","Mình cũng vậy. Lâu rồi không gặp!","A2",["Long time no see"]),
+ C("I know, right? It's been ages!","Đúng không? Lâu lắm rồi!","It's been ages = lâu lắm rồi.",["Yeah, we should catch up soon.","Ừ, mình nên gặp nhau nói chuyện sớm."]),
+ T("Totally. Anyway, I gotta run. Talk later!","Chuẩn luôn. Thôi mình phải đi đây. Nói chuyện sau!","B1",["I gotta run"]),
+ C("Sure thing. Take care!","Được thôi. Giữ gìn nhé!","Cách tạm biệt thân thiện.",["See you around!","Hẹn gặp lại!"])]},
+{id:5,t:"Rủ đi chơi",d:"Hẹn bạn bè · A2–B1",s:[
+ T("Are you free this Saturday?","Thứ Bảy này bạn rảnh không?","A2",["free this Saturday"]),
+ C("I think so. What's the plan?","Chắc là rảnh. Có kế hoạch gì?","Hỏi lại tự nhiên.",["Maybe. Why, what's up?","Có thể. Sao vậy?"]),
+ T("Wanna grab dinner and catch a movie?","Đi ăn tối rồi xem phim không?","B1",["Wanna grab dinner","catch a movie"]),
+ C("Sounds great! Count me in.","Nghe hay đó! Tính mình vào nhé.","Count me in = cho mình tham gia.",["I'd love to, but I'm swamped this weekend.","Mình muốn lắm, nhưng cuối tuần này bận ngập đầu."]),
+ T("Awesome! I'll text you the details.","Tuyệt! Mình nhắn chi tiết cho bạn nhé.","A2",["text you"]),
+ C("Perfect. Can't wait!","Tuyệt. Mong quá!","",["Cool, see you then!","Ok, hẹn gặp!"])]},
+{id:6,t:"Ở công ty",d:"Đồng nghiệp & deadline · B1",s:[
+ T("Morning! Did you get a chance to look at the report?","Chào buổi sáng! Bạn đã xem báo cáo chưa?","B1",["get a chance to"]),
+ C("Not yet, I've been swamped. I'll get to it this afternoon.","Chưa, mình bận ngập đầu. Chiều nay mình sẽ xem.","I'll get to it = mình sẽ làm.",["Yes, I just sent you my notes.","Rồi, mình vừa gửi ghi chú cho bạn."]),
+ T("No rush. Just keep me posted.","Không gấp đâu. Cứ cập nhật cho mình nhé.","B1",["keep me posted"]),
+ C("Will do. Thanks for being flexible!","Được. Cảm ơn bạn đã linh hoạt!","Will do = sẽ làm.",["Got it. I'll let you know.","Hiểu rồi. Mình sẽ báo bạn."]),
+ T("By the way, are you joining the team lunch?","À này, bạn đi ăn trưa với team không?","B1",["By the way"]),
+ C("Yeah, I'm in. Where are we going?","Có, mình đi. Mình đi đâu?","",["I can't, I have a meeting.","Mình không đi được, mình có họp."])]},
+{id:7,t:"Đi xe & hỏi đường",d:"Taxi, Uber · A2–B1",s:[
+ T("Hi, are you Alex? I'm your driver.","Chào, bạn là Alex phải không? Tôi là tài xế.","A2",["your driver"]),
+ C("Yes, that's me. Thanks for coming!","Vâng, là tôi. Cảm ơn đã đến!","",["Yep! Can you take me to the airport?","Vâng! Bạn chở tôi ra sân bay nhé?"]),
+ T("No problem. Traffic looks heavy, though.","Không sao. Nhưng đường có vẻ đông.","A2",["Traffic looks heavy"]),
+ C("That's okay. How long will it take?","Không sao. Mất bao lâu?","",["Can we take a faster route?","Mình đi đường nhanh hơn được không?"]),
+ T("About 30 minutes. You can sit back and relax.","Khoảng 30 phút. Bạn cứ thư giãn nhé.","B1",["sit back and relax"]),
+ C("Great. Could you drop me off right here?","Tốt. Cho tôi xuống ngay đây nhé?","drop me off = cho tôi xuống xe.",["Thanks! Have a nice day.","Cảm ơn! Chúc bạn ngày tốt lành."])]},
+{id:8,t:"Ở nhà hàng",d:"Đặt bàn, gọi món, tính tiền · A2–B1",s:[
+ T("Welcome! Do you have a reservation?","Chào mừng! Bạn có đặt bàn chưa?","A2",["a reservation"]),
+ C("No, a table for two, please.","Chưa, cho một bàn hai người.","",["Yes, under the name Linh.","Có, tên Linh."]),
+ T("Are you ready to order, or do you need a few more minutes?","Bạn gọi món chưa, hay cần thêm vài phút?","B1",["ready to order"]),
+ C("I'll have the chicken, please. What do you recommend?","Cho mình món gà. Bạn gợi ý món nào?","",["Could we have a few more minutes?","Cho bọn mình thêm vài phút nhé?"]),
+ T("Everything good? Can I get you anything else?","Mọi thứ ổn chứ? Bạn cần gì thêm không?","A2",["anything else"]),
+ C("We're all set. Could we get the check, please?","Bọn mình đủ rồi. Cho xin hóa đơn nhé?","check (Mỹ) = hóa đơn.",["Could we split the bill?","Bọn mình chia hóa đơn được không?"])]},
+{id:9,t:"Xin lỗi & từ chối",d:"My bad, no worries · B1",s:[
+ T("Hey, you're late. I've been waiting for twenty minutes.","Này, bạn đến trễ. Mình đợi hai mươi phút rồi.","B1",["been waiting"]),
+ C("My bad! The traffic was crazy. I'm so sorry.","Lỗi của mình! Đường kẹt khủng khiếp. Xin lỗi nhé.","My bad = lỗi của mình (thân mật).",["Sorry, I totally lost track of time.","Xin lỗi, mình quên mất thời gian."]),
+ T("It's fine. Don't worry about it.","Không sao. Đừng lo.","A2",["Don't worry about it"]),
+ C("Thanks for understanding. Let me buy you a coffee.","Cảm ơn bạn thông cảm. Để mình mời cà phê.","",["I owe you one!","Mình nợ bạn một lần!"]),
+ T("Deal. Hey, can you lend me some cash? I forgot my wallet.","Chốt. À, cho mình mượn ít tiền được không? Mình quên ví.","B1",["lend me"]),
+ C("I'd love to help, but I'm a bit short this week.","Mình muốn giúp lắm, nhưng tuần này hơi hụt tiền.","Từ chối nhẹ nhàng.",["Sure, no worries. How much do you need?","Được, không sao. Bạn cần bao nhiêu?"])]},
+{id:10,t:"Nhắn tin & slang",d:"omg, brb, ttyl · B1",s:[
+ T("omg did you see that??","trời ơi bạn thấy cái đó chưa??","B1",["omg"]),
+ C("Haha yes! I can't believe it. LOL","Haha rồi! Không tin nổi luôn. LOL","LOL = cười lớn.",["No, what happened?","Chưa, có chuyện gì?"]),
+ T("Gotta go, brb. Ttyl!","Mình đi đây, lát quay lại (brb = be right back). Nói chuyện sau (ttyl)!","B1",["brb","Ttyl"]),
+ C("K, ttyl! Btw, are you coming tonight?","Ok, nói chuyện sau! À mà tối nay bạn đến không?","btw = by the way.",["No worries, ttyl!","Không sao, nói chuyện sau!"]),
+ T("IDK yet. I'll hit you up later.","Chưa biết nữa. Lát mình nhắn bạn.","B1",["hit you up"]),
+ C("Cool, keep me in the loop!","Ok, cập nhật cho mình nhé!","in the loop = được cập nhật.",["Sounds good!","Nghe ổn đó!"])]},
+{id:11,t:"Mua sắm & đổi trả",d:"Cửa hàng quần áo · A2–B1",s:[
+ T("Hi there! Let me know if you need any help.","Chào bạn! Cần giúp gì cứ nói nhé.","A2",["Let me know"]),
+ C("Thanks, I'm just browsing.","Cảm ơn, mình chỉ xem thôi.","just browsing = chỉ xem.",["Do you have this in a medium?","Cái này có size M không?"]),
+ T("That jacket is on sale. It's 30% off today.","Áo khoác đó đang giảm giá. Hôm nay giảm 30%.","B1",["on sale"]),
+ C("Nice! Can I try it on?","Hay quá! Mình thử được không?","try on = thử đồ.",["That's still a bit pricey for me.","Vẫn hơi đắt với mình."]),
+ T("Of course. The fitting rooms are right over there.","Dĩ nhiên. Phòng thử đồ ở ngay đằng kia.","B1",["fitting rooms"]),
+ C("It's too small. Can I exchange it for a larger size?","Nhỏ quá. Mình đổi size lớn hơn được không?","",["Do you have a refund policy?","Cửa hàng có chính sách hoàn tiền không?"])]},
+{id:12,t:"An ủi bạn bè",d:"Nghe bạn than phiền · B1",s:[
+ T("Ugh, I had such a rough day.","Haizz, hôm nay mình có một ngày tệ lắm.","B1",["rough day"]),
+ C("Oh no, what happened?","Ôi không, có chuyện gì vậy?","",["Sorry to hear that. Wanna talk about it?","Tiếc quá. Muốn kể không?"]),
+ T("My boss yelled at me over a tiny mistake.","Sếp mắng mình vì một lỗi nhỏ xíu.","B1",["yelled at me"]),
+ C("That sucks. Don't take it personally.","Tệ thật. Đừng để bụng.","That sucks = tệ thật (thân mật).",["I'm here for you if you need anything.","Mình luôn ở đây nếu bạn cần."]),
+ T("Thanks. I just need to vent.","Cảm ơn. Mình chỉ cần xả stress.","B1",["need to vent"]),
+ C("Anytime. Let's grab a drink, my treat.","Lúc nào cũng được. Đi uống gì đi, mình mời.","my treat = mình mời.",["Take a deep breath. It'll get better.","Hít thở sâu. Sẽ ổn thôi."])]}
+];
+/* ===== HẾT BÀI HỌC ===== */
+const EM={1:"💌",2:"☕",3:"👋",4:"😎",5:"🎬",6:"💼",7:"🚕",8:"🍜",9:"🙏",10:"📱",11:"🛍️",12:"🫶"};
+const LV={1:"A2",2:"A2",3:"A2",4:"A2",5:"B1",6:"B1",7:"A2",8:"A2",9:"B1",10:"B1",11:"B1",12:"B1"};
+L.forEach(l=>{if(!l.lv)l.lv=LV[l.id]});
+const CH={1:["What if I don't let you"],2:["Can I have","no sugar","Card, please"],3:["Nice to meet you","I love hiking"],4:["How about you","It's been ages","Take care"],5:["What's the plan","Count me in","Can't wait"],6:["I'll get to it","Will do","I'm in"],7:["that's me","How long will it take","drop me off"],8:["a table for two","What do you recommend","Could we get the check"],9:["My bad","Let me buy you a coffee","I'm a bit short"],10:["I can't believe it","Btw","keep me in the loop"],11:["just browsing","try it on","exchange it"],12:["what happened","Don't take it personally","my treat"]};
+Object.keys(CH).forEach(k=>{let i=0;L.find(l=>l.id==k).s.forEach(m=>{if(m.c)m.hl=[CH[k][i++]]})});
+const X=`#13|🙋|Giới thiệu bản thân|Tên, quê quán, nghề nghiệp|A1
+T|Hello! What's your name?|Xin chào! Bạn tên là gì?|What's your name
+Y|My name is Linh. Nice to meet you.|Tên mình là Linh. Rất vui được gặp bạn.|Nice to meet you
+T|Where are you from?|Bạn đến từ đâu?|Where are you from
+Y|I am from Vietnam. And you?|Mình đến từ Việt Nam. Còn bạn?|I am from
+T|I am from Canada. I am a teacher.|Mình đến từ Canada. Mình là giáo viên.|I am a teacher
+Y|I am a student. I study English.|Mình là sinh viên. Mình học tiếng Anh.|I study English
+T|How old are you?|Bạn bao nhiêu tuổi?|How old are you
+Y|I am twenty years old. Goodbye!|Mình hai mươi tuổi. Tạm biệt!|years old
+#14|⏰|Giờ giấc hằng ngày|Hỏi giờ, lịch sinh hoạt|A1
+T|What time is it?|Mấy giờ rồi?|What time is it
+Y|It is half past three.|Bây giờ là ba giờ rưỡi.|half past three
+T|What time do you wake up?|Bạn thức dậy lúc mấy giờ?|wake up
+Y|I wake up at seven o'clock.|Mình thức dậy lúc bảy giờ.|o'clock
+T|Do you work every day?|Bạn đi làm mỗi ngày à?|every day
+Y|No, I work from Monday to Friday.|Không, mình làm từ thứ Hai đến thứ Sáu.|from Monday to Friday
+T|Great. See you at five tomorrow!|Tuyệt. Mai năm giờ gặp nhé!|See you at five
+Y|Okay. See you tomorrow!|Ok. Mai gặp nhé!|See you tomorrow
+#15|👨‍👩‍👧|Gia đình|Nói về người thân|A1
+T|Who is in your family?|Gia đình bạn có những ai?|your family
+Y|I have a mother, a father and a sister.|Mình có mẹ, bố và một chị gái.|a sister
+T|Do you have any brothers?|Bạn có anh em trai không?|any brothers
+Y|No, I don't. I have one cat!|Không. Mình có một con mèo!|I don't
+T|Cute! What is your mother's job?|Dễ thương! Mẹ bạn làm nghề gì?|job
+Y|She is a doctor. She works at a hospital.|Mẹ mình là bác sĩ. Mẹ làm ở bệnh viện.|works at a hospital
+T|Do you live with your parents?|Bạn sống với bố mẹ à?|live with
+Y|Yes, we live in a small house.|Vâng, nhà mình ở một ngôi nhà nhỏ.|a small house
+#16|⛅|Thời tiết|Nóng, lạnh, mưa|A2
+T|It's so hot today, isn't it?|Hôm nay nóng quá nhỉ?|so hot
+Y|Yes! I think it's going to rain later.|Ừ! Mình nghĩ lát nữa sẽ mưa.|going to rain
+T|Did you check the weather forecast?|Bạn xem dự báo thời tiết chưa?|weather forecast
+Y|I did. It says there will be a storm tonight.|Rồi. Nó nói tối nay sẽ có bão.|a storm
+T|Oh no. I forgot to bring an umbrella.|Ôi không. Mình quên mang ô.|bring an umbrella
+Y|Don't worry. You can borrow mine.|Đừng lo. Bạn mượn của mình đi.|borrow mine
+T|You're a lifesaver! It's freezing outside.|Bạn cứu mình rồi! Ngoài trời lạnh cóng.|a lifesaver
+Y|Let's stay inside and drink hot tea.|Mình ở trong nhà uống trà nóng đi.|stay inside
+#17|🏨|Ở khách sạn|Nhận phòng, hỏi tiện nghi|A2
+T|Good evening. How can I help you?|Chào buổi tối. Tôi giúp gì được bạn?|How can I help you
+Y|Hi, I have a reservation under Nam.|Chào, tôi có đặt phòng tên Nam.|a reservation
+T|Yes, a double room for three nights. Here is your key.|Vâng, phòng đôi ba đêm. Đây là chìa khóa.|double room
+Y|Thank you. What time is breakfast?|Cảm ơn. Bữa sáng lúc mấy giờ?|breakfast
+T|Breakfast is from seven to ten on the second floor.|Bữa sáng từ bảy đến mười giờ ở tầng hai.|on the second floor
+Y|Is there Wi-Fi in the room?|Phòng có Wi-Fi không?|Wi-Fi
+T|Yes, the password is on the card.|Có, mật khẩu ở trên thẻ.|the password
+Y|Great. Could I have a late check-out tomorrow?|Tốt. Mai cho tôi trả phòng muộn được không?|check-out
+#18|🗺️|Hỏi đường|Rẽ trái, đi bộ, xe buýt|A2
+T|Excuse me, how do I get to the train station?|Xin lỗi, đi đến ga tàu thế nào?|how do I get to
+Y|Go straight and turn left at the bank.|Đi thẳng rồi rẽ trái ở ngân hàng.|turn left
+T|Is it far from here?|Chỗ đó có xa đây không?|far from here
+Y|No, it's about ten minutes on foot.|Không, đi bộ khoảng mười phút.|on foot
+T|Great. Is there a bus I can take?|Tốt. Có xe buýt nào đi được không?|a bus
+Y|Yes, take bus number five. It stops right there.|Có, đi xe buýt số năm. Nó dừng ngay đó.|stops right there
+T|Thank you so much. You've been very helpful!|Cảm ơn nhiều. Bạn giúp ích lắm!|very helpful
+Y|You're welcome. Have a safe trip!|Không có chi. Chúc đi an toàn!|Have a safe trip
+#19|🥬|Đi chợ|Mặc cả, mua rau trái|A2
+T|Fresh tomatoes! Three dollars a kilo!|Cà chua tươi! Ba đô một ký!|a kilo
+Y|That's a bit expensive. Can you lower the price?|Hơi đắt. Bạn bớt giá được không?|lower the price
+T|Okay, two fifty if you buy two kilos.|Được, hai rưỡi nếu mua hai ký.|if you buy
+Y|Deal. I'll also take some onions.|Chốt. Tôi lấy thêm ít hành tây.|I'll also take
+T|Anything else? We have fresh mangoes today.|Còn gì nữa không? Hôm nay có xoài tươi.|Anything else
+Y|How much are the mangoes?|Xoài bao nhiêu tiền?|How much
+T|Four dollars for a bag.|Bốn đô một túi.|for a bag
+Y|Sure, I'll take one. Do you have a plastic bag?|Được, tôi lấy một túi. Bạn có túi nilon không?|plastic bag
+#20|🩺|Khám bác sĩ|Triệu chứng, kê thuốc|B1
+T|Hello, how can I help you today?|Chào, hôm nay tôi giúp gì được bạn?|help you today
+Y|I've had a sore throat and a fever since Monday.|Tôi bị đau họng và sốt từ thứ Hai.|a sore throat
+T|Do you have any allergies to medication?|Bạn có dị ứng thuốc nào không?|allergies
+Y|Not that I know of. Should I be worried?|Theo tôi biết thì không. Tôi có nên lo không?|Not that I know of
+T|It looks like a mild infection. I'll prescribe some antibiotics.|Có vẻ nhiễm trùng nhẹ. Tôi sẽ kê kháng sinh.|prescribe
+Y|How often should I take them?|Tôi nên uống bao lâu một lần?|How often
+T|Twice a day after meals, and get plenty of rest.|Hai lần mỗi ngày sau bữa ăn, và nghỉ ngơi nhiều.|plenty of rest
+Y|Thank you, doctor. I'll make an appointment for next week.|Cảm ơn bác sĩ. Tôi sẽ đặt lịch hẹn tuần sau.|make an appointment
+#21|🏠|Thuê nhà|Tiền cọc, hợp đồng|B1
+T|Thanks for coming. This is the apartment I told you about.|Cảm ơn bạn đã đến. Đây là căn hộ tôi đã nói.|I told you about
+Y|It's lovely. How much is the monthly rent?|Đẹp quá. Tiền thuê hàng tháng bao nhiêu?|monthly rent
+T|It's 600 dollars, and utilities are not included.|600 đô, chưa bao gồm tiện ích.|utilities
+Y|I see. Do I have to pay a deposit?|Tôi hiểu. Tôi có phải đặt cọc không?|a deposit
+T|Yes, one month's rent, which you get back when you move out.|Có, một tháng tiền thuê, sẽ trả lại khi bạn dọn đi.|move out
+Y|And is it okay to have a pet?|Và nuôi thú cưng được không?|have a pet
+T|Small ones are fine, as long as they don't make noise.|Thú nhỏ thì được, miễn là không ồn.|as long as
+Y|Perfect. I'd like to sign the lease.|Tuyệt. Tôi muốn ký hợp đồng thuê.|sign the lease
+#22|✈️|Sân bay|Hộ chiếu, khai báo|B1
+T|Good morning. May I see your passport and boarding pass?|Chào buổi sáng. Cho xem hộ chiếu và thẻ lên máy bay?|boarding pass
+Y|Here you go. Do I need to take out my laptop?|Đây ạ. Tôi có cần lấy laptop ra không?|Here you go
+T|Yes, put it in the tray. What is the purpose of your visit?|Có, để vào khay. Mục đích chuyến đi của bạn là gì?|purpose of your visit
+Y|I'm here on vacation for two weeks.|Tôi đi nghỉ hai tuần.|on vacation
+T|Do you have anything to declare?|Bạn có gì cần khai báo không?|anything to declare
+Y|No, just personal belongings and some gifts.|Không, chỉ đồ cá nhân và vài món quà.|personal belongings
+T|Alright. Your flight is delayed by an hour.|Được rồi. Chuyến bay của bạn bị hoãn một giờ.|delayed
+Y|That's fine. Where is gate twelve?|Không sao. Cổng mười hai ở đâu?|gate twelve
+#23|🧳|Lên kế hoạch du lịch|Chọn điểm đến|B1
+T|So, have you decided where to go for the holidays?|Vậy bạn đã quyết định đi đâu dịp lễ chưa?|decided where to go
+Y|I'm thinking about Japan. I've always wanted to see Kyoto.|Mình đang nghĩ đến Nhật. Mình luôn muốn thấy Kyoto.|always wanted to
+T|Nice! Are you going to book a tour or travel on your own?|Hay! Bạn sẽ đặt tour hay tự đi?|on your own
+Y|On my own. I prefer to go at my own pace.|Tự đi. Mình thích đi theo nhịp của mình.|at my own pace
+T|Smart. Just make sure you book the hotel in advance.|Khôn đấy. Nhớ đặt khách sạn trước.|in advance
+Y|Good point. Is it better to go in spring?|Có lý. Đi vào mùa xuân có tốt hơn không?|Good point
+T|Definitely. The cherry blossoms are worth the trip.|Chắc chắn. Hoa anh đào đáng để đi.|worth the trip
+Y|Then it's settled. I'll start packing!|Vậy chốt nhé. Mình sẽ bắt đầu đóng đồ!|it's settled
+#24|🍿|Bàn về phim|Cốt truyện, diễn xuất|B1
+T|Have you seen the new sci-fi movie everyone is talking about?|Bạn xem phim khoa học viễn tưởng mới mà ai cũng nói chưa?|talking about
+Y|Not yet. Is it worth watching?|Chưa. Có đáng xem không?|worth watching
+T|Absolutely. The plot twist at the end blew my mind.|Chắc chắn. Cú twist cuối làm mình choáng.|plot twist
+Y|No spoilers, please! Who plays the main character?|Đừng spoil nhé! Ai đóng nhân vật chính?|main character
+T|A young actress. Her performance was incredible.|Một nữ diễn viên trẻ. Diễn xuất của cô ấy tuyệt vời.|performance
+Y|I usually prefer comedies, to be honest.|Thật ra mình thường thích phim hài hơn.|to be honest
+T|Fair enough. We could watch one this weekend.|Cũng được. Cuối tuần mình xem một phim nhé.|Fair enough
+Y|Sounds like a plan. I'll bring the popcorn.|Nghe ổn đấy. Mình mang bắp rang.|Sounds like a plan
+#25|👔|Phỏng vấn xin việc|Điểm mạnh, mục tiêu|B2
+T|Thanks for coming in. Could you walk me through your résumé?|Cảm ơn bạn đã đến. Bạn điểm qua CV được không?|walk me through
+Y|Certainly. I've spent five years in marketing, mainly managing digital campaigns.|Dĩ nhiên. Tôi có năm năm làm marketing, chủ yếu quản lý chiến dịch số.|managing digital campaigns
+T|What would you say is your greatest strength?|Điểm mạnh lớn nhất của bạn là gì?|greatest strength
+Y|I'd say I'm highly adaptable and I work well under pressure.|Tôi nghĩ mình rất linh hoạt và làm việc tốt dưới áp lực.|work well under pressure
+T|And how do you handle criticism from your manager?|Bạn xử lý lời phê bình của quản lý thế nào?|handle criticism
+Y|I see it as an opportunity to grow rather than a setback.|Tôi coi đó là cơ hội phát triển hơn là trở ngại.|an opportunity to grow
+T|Where do you see yourself in five years?|Năm năm nữa bạn thấy mình ở đâu?|see yourself
+Y|Leading a team, and contributing to the company's long-term goals.|Dẫn dắt một nhóm và đóng góp vào mục tiêu dài hạn của công ty.|long-term goals
+#26|🗣️|Họp nhóm|Góp ý, thỏa hiệp|B2
+T|Let's kick off the meeting. Any thoughts on the new proposal?|Bắt đầu họp nhé. Ai có ý kiến về đề xuất mới không?|kick off
+Y|I'm afraid I have some reservations about the timeline.|Tôi e là tôi có vài băn khoăn về tiến độ.|reservations
+T|Fair point. Could you elaborate on that?|Có lý. Bạn nói rõ hơn được không?|elaborate on
+Y|We're stretched thin, so delivering by May seems unrealistic.|Chúng ta đang quá tải, nên giao hàng vào tháng Năm khó thực tế.|stretched thin
+T|I take your point, but the client is pushing hard for it.|Tôi hiểu ý bạn, nhưng khách hàng đang thúc ép.|I take your point
+Y|Perhaps we could meet them halfway and deliver in phases.|Có lẽ ta có thể thỏa hiệp và giao theo từng giai đoạn.|meet them halfway
+T|That could work. Let's draft a revised plan and circle back on Friday.|Cách đó được. Soạn kế hoạch sửa đổi rồi quay lại vào thứ Sáu.|circle back
+Y|Agreed. I'll send the draft by tomorrow afternoon.|Đồng ý. Tôi gửi bản nháp trước chiều mai.|by tomorrow afternoon
+#27|😤|Khiếu nại dịch vụ|Hoàn tiền, đổi hàng|B2
+T|Customer service, how may I assist you?|Chăm sóc khách hàng đây, tôi hỗ trợ gì được?|how may I assist you
+Y|I'd like to file a complaint. My order arrived damaged.|Tôi muốn khiếu nại. Đơn hàng của tôi đến nơi bị hỏng.|file a complaint
+T|I'm terribly sorry to hear that. Could you provide your order number?|Tôi rất tiếc. Bạn cho tôi mã đơn hàng được không?|order number
+Y|It's 48213. This is the second time it's happened.|Là 48213. Đây là lần thứ hai chuyện này xảy ra.|the second time
+T|I understand your frustration. We can offer a replacement or a full refund.|Tôi hiểu sự bực bội của bạn. Chúng tôi có thể đổi hàng hoặc hoàn tiền.|full refund
+Y|I'd prefer a refund. I've lost confidence in your delivery service.|Tôi muốn hoàn tiền. Tôi mất niềm tin vào dịch vụ giao hàng.|lost confidence
+T|Understood. The refund will be processed within five working days.|Rõ. Tiền sẽ được hoàn trong năm ngày làm việc.|processed within
+Y|Fine, but I expect better service next time.|Được, nhưng tôi mong dịch vụ tốt hơn lần sau.|I expect better
+#28|📲|Tranh luận về mạng xã hội|Đồng ý và phản biện|B2
+T|Honestly, I think social media is doing more harm than good.|Thật lòng mình nghĩ mạng xã hội hại nhiều hơn lợi.|more harm than good
+Y|I see where you're coming from, but it also keeps people connected.|Mình hiểu ý bạn, nhưng nó cũng giúp mọi người kết nối.|coming from
+T|Sure, but people are glued to their screens all day.|Đúng, nhưng người ta dán mắt vào màn hình cả ngày.|glued to
+Y|That's a valid concern. It really comes down to how you use it.|Đó là mối lo chính đáng. Tất cả tùy cách bạn dùng.|comes down to
+T|Fair, yet it fuels anxiety, especially among teenagers.|Công bằng, nhưng nó gây lo âu, nhất là ở thanh thiếu niên.|fuels anxiety
+Y|Which is why setting boundaries matters, like screen-time limits.|Vì vậy đặt giới hạn rất quan trọng, như hạn mức thời gian dùng.|setting boundaries
+T|I suppose you've got a point there.|Mình đoán bạn nói có lý.|got a point
+Y|Let's agree to disagree and grab a coffee instead.|Mình đồng ý là bất đồng rồi đi uống cà phê nhé.|agree to disagree
+#29|🧘|Sức khỏe tinh thần|Chia sẻ và lắng nghe|B2
+T|You seem a bit down lately. Is everything okay?|Dạo này bạn có vẻ buồn. Mọi chuyện ổn không?|a bit down
+Y|Honestly, I've been feeling burnt out at work.|Thật ra mình thấy kiệt sức vì công việc.|burnt out
+T|That sounds exhausting. Have you talked to anyone about it?|Nghe mệt mỏi quá. Bạn đã nói với ai chưa?|talked to anyone
+Y|Not really. I didn't want to be a burden.|Chưa hẳn. Mình không muốn làm gánh nặng.|a burden
+T|You're not. Sometimes opening up is the first step to feeling better.|Không đâu. Đôi khi chia sẻ là bước đầu để thấy tốt hơn.|opening up
+Y|You're right. I should probably take some time off.|Bạn đúng. Chắc mình nên nghỉ một thời gian.|take some time off
+T|Absolutely. Your well-being comes first.|Chắc chắn. Sức khỏe tinh thần của bạn là trên hết.|comes first
+Y|Thanks for listening. It means a lot.|Cảm ơn đã lắng nghe. Điều đó rất ý nghĩa.|means a lot
+#30|💰|Đàm phán lương|Thương lượng chuyên nghiệp|C1
+T|We're pleased to offer you the position. The starting salary is sixty thousand.|Chúng tôi vui mừng mời bạn nhận vị trí. Lương khởi điểm là sáu mươi nghìn.|pleased to offer
+Y|Thank you, I'm genuinely excited. However, I was expecting something closer to seventy.|Cảm ơn, tôi thực sự hào hứng. Tuy nhiên tôi kỳ vọng gần bảy mươi hơn.|was expecting
+T|That's somewhat above our budget. What's driving that figure?|Con số đó hơi vượt ngân sách. Điều gì dẫn bạn đến mức đó?|above our budget
+Y|Given my track record in scaling teams, I believe it reflects the value I'd bring.|Xét thành tích mở rộng đội ngũ, tôi tin mức đó phản ánh giá trị tôi mang lại.|track record
+T|We could stretch to sixty-five, plus a performance bonus.|Chúng tôi có thể nâng lên sáu mươi lăm, cộng thưởng hiệu suất.|performance bonus
+Y|I appreciate the flexibility. Would you be open to revisiting the salary after six months?|Tôi trân trọng sự linh hoạt. Bạn có thể xem xét lại lương sau sáu tháng không?|open to revisiting
+T|We can put that in writing, provided you meet the agreed targets.|Chúng tôi có thể ghi vào văn bản, miễn là bạn đạt mục tiêu đã thỏa thuận.|provided
+Y|That works for me. Let's finalize the details.|Vậy được với tôi. Hãy chốt chi tiết.|finalize the details
+#31|🎤|Thuyết trình & hỏi đáp|Trả lời câu hỏi khó|C1
+T|Thank you for that overview. May I ask a follow-up question?|Cảm ơn phần tổng quan. Tôi hỏi thêm một câu được không?|follow-up question
+Y|By all means. Please go ahead.|Tất nhiên. Mời bạn.|By all means
+T|Your projections assume a steady growth rate. How robust is that assumption?|Dự báo của bạn giả định tăng trưởng đều. Giả định đó vững chắc đến đâu?|How robust
+Y|It's a fair challenge. The data covers three years, so there's inherent uncertainty.|Câu hỏi hợp lý. Dữ liệu chỉ ba năm nên có bất định vốn có.|inherent uncertainty
+T|Did you account for potential market disruptions?|Bạn đã tính đến biến động thị trường chưa?|account for
+Y|We ran a sensitivity analysis, which I can walk you through after the session.|Chúng tôi đã phân tích độ nhạy, tôi sẽ trình bày sau buổi họp.|sensitivity analysis
+T|That would be valuable. One last point: how scalable is the model?|Vậy rất hữu ích. Câu cuối: mô hình mở rộng được đến đâu?|how scalable
+Y|Highly scalable, provided we secure the additional funding.|Rất mở rộng được, miễn là chúng ta có thêm vốn.|secure the additional funding
+#32|📰|Bàn về tin tức|Kinh tế, chính sách|C1
+T|Did you read that article about the central bank raising interest rates?|Bạn đọc bài về ngân hàng trung ương tăng lãi suất chưa?|interest rates
+Y|I skimmed it. The implications for homebuyers seem rather bleak.|Mình đọc lướt. Tác động với người mua nhà có vẻ khá ảm đạm.|rather bleak
+T|Indeed. Critics argue the move is long overdue, though.|Đúng. Nhưng giới phê bình cho rằng việc này đã quá muộn.|long overdue
+Y|Others contend it will stifle economic growth.|Người khác cho rằng nó sẽ kìm hãm tăng trưởng kinh tế.|stifle
+T|It's a delicate balancing act. Inflation can't be allowed to spiral.|Đó là việc cân bằng tinh tế. Không thể để lạm phát leo thang.|spiral
+Y|True, though the burden falls disproportionately on lower-income households.|Đúng, nhưng gánh nặng đè nặng lên các hộ thu nhập thấp.|disproportionately
+T|That's a compelling point. Policymakers rarely get a clear-cut choice.|Điểm đó thuyết phục. Nhà hoạch định chính sách hiếm khi có lựa chọn rõ ràng.|clear-cut
+Y|Precisely. There are trade-offs whichever way they turn.|Chính xác. Hướng nào cũng có đánh đổi.|trade-offs
+#33|🤝|Giải quyết xung đột|Nói thẳng và xin lỗi|C1
+T|I need to be upfront with you. I felt sidelined in yesterday's meeting.|Mình cần nói thẳng. Mình thấy bị gạt ra rìa trong cuộc họp hôm qua.|sidelined
+Y|I appreciate you raising it. That was never my intention.|Mình cảm kích bạn nói ra. Đó không phải ý của mình.|never my intention
+T|It came across as dismissive when you cut me off.|Nó có vẻ coi thường khi bạn ngắt lời mình.|came across as
+Y|You're right, and I owe you an apology. I got carried away.|Bạn đúng, mình nợ bạn lời xin lỗi. Mình hơi quá đà.|got carried away
+T|Thank you. I just want us to be on the same page going forward.|Cảm ơn. Mình chỉ muốn chúng ta đồng thuận từ giờ.|on the same page
+Y|Agreed. Next time, let's agree on a format that lets everyone weigh in.|Đồng ý. Lần sau thống nhất cách để ai cũng góp ý được.|weigh in
+T|That would go a long way toward rebuilding trust.|Điều đó sẽ giúp ích nhiều cho việc xây lại lòng tin.|go a long way
+Y|Let's clear the air over lunch. My treat.|Mình nói rõ mọi chuyện bữa trưa nhé. Mình mời.|clear the air
+#34|🎭|Thành ngữ đời thường|Idioms người bản xứ|C2
+T|I heard you bit the bullet and quit your job.|Nghe nói bạn cắn răng nghỉ việc rồi.|bit the bullet
+Y|Yeah, it was a leap of faith, but I was at the end of my tether.|Ừ, đó là bước nhảy vào cõi vô định, nhưng mình chịu hết nổi rồi.|end of my tether
+T|Well, better late than never. What's the plan now?|Thôi, muộn còn hơn không. Giờ kế hoạch là gì?|better late than never
+Y|I'm playing it by ear for now, but I've got a few irons in the fire.|Giờ mình tùy cơ ứng biến, nhưng có vài dự định đang chuẩn bị.|playing it by ear
+T|Don't put all your eggs in one basket, though.|Nhưng đừng bỏ hết trứng vào một giỏ.|all your eggs in one basket
+Y|Point taken. I'm not about to burn my bridges either.|Mình hiểu. Mình cũng không định đốt cầu sau lưng đâu.|burn my bridges
+T|Good. The ball is in your court now, so go for it.|Tốt. Giờ quyền quyết định ở bạn, cứ làm đi.|The ball is in your court
+Y|Wish me luck. I'll cross that bridge when I come to it.|Chúc mình may mắn. Đến đâu hay đến đó.|cross that bridge
+#35|😏|Hài hước & mỉa mai|Sarcasm, banter|C2
+T|Oh great, another Monday. Just what I needed.|Ôi tuyệt, lại thứ Hai. Đúng thứ mình cần (mỉa mai).|Just what I needed
+Y|Don't sound so thrilled. You'll wear out your enthusiasm.|Đừng tỏ ra hào hứng thế. Bạn sẽ cạn năng lượng mất.|so thrilled
+T|I'm serious, my inbox is a dumpster fire.|Mình nghiêm túc, hộp thư của mình như bãi rác cháy.|dumpster fire
+Y|Look on the bright side: it can't possibly get any worse.|Hãy nhìn mặt tích cực: không thể tệ hơn nữa.|bright side
+T|Famous last words. Did you just jinx me?|Lời nói cuối cùng nổi tiếng. Bạn vừa nói gở mình à?|jinx
+Y|Who, me? I'm the soul of discretion.|Ai, mình á? Mình kín miệng lắm đấy.|soul of discretion
+T|Right, and I'm the Queen of England.|Ừ, còn mình là Nữ hoàng Anh đấy (mỉa mai).|the Queen of England
+Y|Your Majesty, shall I fetch you a coffee?|Thưa Bệ hạ, để thần đi lấy cà phê nhé?|fetch
+#36|🌌|Triết lý cuộc sống|Ý chí tự do, nghịch cảnh|C2
+T|Do you ever wonder whether we have genuine free will?|Bạn có bao giờ tự hỏi liệu ta có ý chí tự do thực sự?|free will
+Y|Frequently. Though I suspect the question is more nuanced than a simple dichotomy.|Thường xuyên. Dù mình ngờ câu hỏi tinh tế hơn lưỡng phân đơn giản.|nuanced
+T|Surely our choices are merely the product of our circumstances.|Chắc chắn lựa chọn của ta chỉ là sản phẩm của hoàn cảnh.|merely the product
+Y|Perhaps, yet that doesn't absolve us of responsibility for them.|Có thể, nhưng điều đó không miễn trách nhiệm của ta.|absolve
+T|An interesting distinction. Where do you draw the line?|Một sự phân biệt thú vị. Bạn vạch ranh giới ở đâu?|draw the line
+Y|I'd argue that agency exists in how we respond, not in what befalls us.|Mình cho rằng quyền tự chủ nằm ở cách ta phản ứng, không phải điều xảy đến.|what befalls us
+T|That's oddly consoling. It makes adversity feel less arbitrary.|Điều đó an ủi lạ lùng. Nó khiến nghịch cảnh bớt tùy tiện.|adversity
+Y|Which, in the end, is all we can ask for.|Rốt cuộc, đó là tất cả những gì ta có thể mong.|in the end
+#37|🎓|Tranh luận học thuật|Lập luận chặt chẽ|C2
+T|Your thesis hinges on the premise that causation can be inferred from correlation.|Luận điểm của bạn dựa trên tiền đề rằng nhân quả suy ra được từ tương quan.|hinges on
+Y|On the contrary, I explicitly caution against conflating the two.|Ngược lại, tôi đã nói rõ cần tránh nhầm lẫn hai điều này.|On the contrary
+T|Then how do you reconcile that with your sweeping conclusions in chapter four?|Vậy bạn dung hòa điều đó với kết luận bao quát ở chương bốn thế nào?|reconcile
+Y|They're deliberately tentative; I stop short of claiming a definitive link.|Chúng cố ý thận trọng; tôi không khẳng định mối liên hệ dứt khoát.|stop short of
+T|Granted, but the methodology remains vulnerable to selection bias.|Công nhận, nhưng phương pháp vẫn dễ bị thiên lệch chọn mẫu.|selection bias
+Y|A legitimate critique, and one I acknowledge as a limitation of the study.|Phê bình chính đáng, và tôi thừa nhận đó là hạn chế của nghiên cứu.|a limitation
+T|I'd urge you to address it more rigorously in the next edition.|Tôi mong bạn xử lý chặt chẽ hơn trong ấn bản sau.|more rigorously
+Y|Duly noted. I welcome further scrutiny.|Đã ghi nhận. Tôi hoan nghênh sự xem xét kỹ hơn.|Duly noted
+`;
+(function(){let c;X.trim().split("\n").forEach(r=>{const p=r.split("|");if(r[0]==="#"){c={id:+p[0].slice(1),t:p[2],d:p[3]+" · "+p[4],lv:p[4],s:[]};EM[c.id]=p[1];L.push(c)}else if(p[0]==="T")c.s.push({w:"them",en:p[1],vi:p[2],lv:c.lv,hl:[p[3]]});else c.s.push({c:1,en:p[1],vi:p[2],tag:p[4]||"",alts:[],hl:[p[3]]})})})();
+let flt="all",mode="chat",score=0,total=0,blank=null;
+const $=i=>document.getElementById(i);
+let cur,idx,sel,busy=0,rec=null,run=0;const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};let vocab=ld('ce_v',[]),done=ld('ce_d',[]);
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+function toast(m){const t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display="none",1800)}
+function home(){
+  $("home").style.display="block";$("cz").style.display="none";$("chat").style.display="none";$("panel").style.display="none";$("back").style.display="none";$("ttl").textContent="ChatEnglish 🐰";
+  $("home").innerHTML=`<div class="hero"><div class="mas">🐰</div><div><h2>Hi bạn! 👋</h2><p>Hôm nay mình nói tiếng Anh nhé?</p></div></div><div class="stats"><span>🔥 ${done.length}/${L.length} bài</span><span>⭐ ${vocab.length} từ</span></div><div class="flt">${["all","A1","A2","B1","B2","C1","C2"].map(x=>`<button class="chip ${flt===x?"on":""}" data-f="${x}">${x==="all"?"Tất cả":x}</button>`).join("")}</div><div class="grid">`+
+   L.filter(l=>flt==="all"||l.lv===flt).map(l=>`<button class="lesson c${l.id%6}" data-i="${l.id}"><i>${EM[l.id]||"💬"}</i><b>${l.t}</b><span>${l.d}</span>${done.includes(l.id)?"<em>✓</em>":""}</button>`).join("")+"</div>";
+  document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{flt=b.dataset.f;home()});
+  document.querySelectorAll(".lesson").forEach(b=>b.onclick=()=>openMode(+b.dataset.i));
+}
+function openMode(id){const l=L.find(x=>x.id===id);$("mT").textContent=(EM[id]||"")+" "+l.t;$("mode").style.display="flex";document.querySelectorAll(".mb").forEach(b=>b.onclick=()=>{$("mode").style.display="none";start(id,b.dataset.m)})}
+$("mX").onclick=()=>$("mode").style.display="none";
+function start(id,md){mode=md||"chat";score=total=0;blank=null;
+  cur=L.find(l=>l.id===id);idx=0;run++;
+  $("home").style.display="none";$("chat").style.display="flex";$("chat").innerHTML="";$("back").style.display="";$("ttl").textContent=cur.t;
+  next();
+}
+function bubble(m,me){
+  let en=m.en;
+  (m.hl||[]).forEach(h=>{en=en.replace(h,`<span class="hl" data-p="${h}" data-vi="${m.vi}">${h}</span>`)});
+  const r=document.createElement("div");r.className="row"+(me?" me":"");
+  r.innerHTML=(me?"":'<div class="av">🐰</div>')+`<button class="b"><div class="en">${en}${m.lv?`<span class="lv">${m.lv}</span>`:""}</div><div class="vi">${m.vi}</div></button>`;
+  r.querySelector(".b").onclick=e=>{
+    const h=e.target.closest(".hl");
+    if(h){if(!vocab.some(v=>v.p===h.dataset.p)){vocab.push({p:h.dataset.p,s:m.en,vi:m.vi});sv('ce_v',vocab);$("vc").textContent=vocab.length}toast("Đã lưu: "+h.dataset.p)}
+    say(m.sp||m.en)};
+  $("chat").appendChild(r);$("chat").scrollTop=1e5;return r;
+}
+function next(){
+  const m=cur.s[idx];
+  if(!m){if(cur.id&&!done.includes(cur.id)){done.push(cur.id);sv("ce_d",done)}$("panel").style.display="none";$("chat").insertAdjacentHTML("beforeend",`<p style="text-align:center;color:var(--sub);font-size:14px">🎉 Hoàn thành!${total?` Điền đúng ${score}/${total} câu ngay lần đầu.`:""} Chạm “Về” để chọn bài khác.</p>`);$("chat").scrollTop=1e5;return}
+  if(mode==="cloze"&&m.hl&&m.hl[0]){cloze(m);return}
+  if(m.c){choose(m);return}
+  $("panel").style.display="none";
+  bubble(m,m.w==="me");idx++;
+  {const r=run;setTimeout(()=>{if(r===run)next()},m.w==="me"?500:900)}
+}
+function cloze(m){
+  $("panel").style.display="none";const me=!!m.c||m.w==="me",ph=m.hl[0];
+  const r=bubble({...m,en:m.en.replace(ph,'<span class="bk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'),hl:[],sp:m.en},me);
+  blank={m,ph,r,tries:0};
+  $("czVi").textContent="Cụm cần điền: "+ph.split(" ").length+" từ, "+ph.replace(/ /g,"").length+" ký tự";
+  $("czIn").value="";$("czMsg").textContent="";$("cz").style.display="block";$("chat").scrollTop=1e5;setTimeout(()=>$("czIn").focus(),60);
+}
+function fin(ok){
+  const b=blank;blank=null;total++;if(ok)score++;$("cz").style.display="none";
+  b.r.querySelector(".en").innerHTML=b.m.en.replace(b.ph,`<span class="hl">${b.ph}</span>`)+(b.m.lv?`<span class="lv">${b.m.lv}</span>`:"");
+  if(!vocab.some(v=>v.p===b.ph)&&!ok){vocab.push({p:b.ph,s:b.m.en,vi:b.m.vi});sv('ce_v',vocab);$("vc").textContent=vocab.length}
+  say(b.m.en);idx++;const r=run;setTimeout(()=>{if(r===run)next()},1000);
+}
+const nz=t=>t.toLowerCase().replace(/[’‘]/g,"'").replace(/[^a-z0-9' ]/g," ").replace(/\s+/g," ").trim();
+$("czOk").onclick=()=>{if(!blank)return;if(nz($("czIn").value)===nz(blank.ph))fin(blank.tries===0);else{blank.tries++;$("czMsg").textContent=blank.tries>1?"Chưa đúng. Bấm 💡 để xem gợi ý.":"Chưa đúng, thử lại nhé!";$("czIn").select()}};
+$("czIn").onkeydown=e=>{if(e.key==="Enter")$("czOk").onclick()};
+$("czHint").onclick=()=>{if(!blank)return;blank.tries++;$("czMsg").textContent="Gợi ý: "+blank.ph.split(" ").map(x=>x[0]+"_".repeat(x.length-1)).join(" ")};
+$("czSk").onclick=()=>{if(blank){$("czIn").value=blank.ph;fin(false)}};
+function choose(m){
+  sel=m;setS(m.en,m.vi,m.tag||"");
+  $("alts").style.display="none";$("more").textContent="Một vài cách khác ⌄";$("res").innerHTML="";
+  $("alts").innerHTML=(m.alts||[]).map((a,i)=>`<button class="alt" data-i="${i}"><div class="en" style="font-size:14px">${a.en}</div><div class="vi">${a.vi}</div></button>`).join("");
+  $("alts").querySelectorAll(".alt").forEach(b=>b.onclick=()=>{const a=m.alts[+b.dataset.i];setS(a.en,a.vi,"");$("res").innerHTML="";say(a.en)});
+  $("more").style.display=(m.alts||[]).length?"block":"none";$("panel").style.display="block";$("chat").scrollTop=1e5;
+}
+let S={};function setS(en,vi,tag){S={en,vi};$("sEn").textContent=en;$("sVi").textContent=vi;$("sTag").textContent=tag}
+$("spk").onclick=()=>say(S.en);
+$("more").onclick=()=>{const o=$("alts").style.display==="block";$("alts").style.display=o?"none":"block";$("more").textContent=o?"Một vài cách khác ⌄":"Ẩn bớt ⌃"};
+$("send").onclick=()=>{if(rec){try{rec.abort()}catch(e){}}bubble(S,true);idx++;$("panel").style.display="none";{const r=run;setTimeout(()=>{if(r===run)next()},700)}};
+const norm=t=>t.toLowerCase().replace(/[^a-z0-9' ]/g," ").split(/\s+/).filter(Boolean);
+$("mic").onclick=()=>{
+  if(!SR){$("res").textContent="Trình duyệt này chưa hỗ trợ nhận giọng nói. Hãy nghe mẫu rồi nhắc lại, sau đó bấm Gửi.";return}
+  if(rec){rec.stop();return}
+  rec=new SR();rec.lang="en-US";rec.interimResults=false;
+  $("mic").classList.add("rec");$("res").textContent="Đang nghe…";
+  rec.onresult=e=>{
+    const heard=norm(e.results[0][0].transcript),want=norm(S.en);
+    const w=want.map(x=>`<span class="w ${heard.includes(x)?"ok":"x"}">${x}</span>`).join(" ");
+    const ok=want.filter(x=>heard.includes(x)).length;
+    $("res").innerHTML=`<b>${Math.round(ok/want.length*100)}%</b> · ${w}`;
+  };
+  rec.onerror=()=>{$("res").textContent="Không nghe được. Kiểm tra quyền micro rồi thử lại."};
+  rec.onend=()=>{rec=null;$("mic").classList.remove("rec")};
+  try{rec.start()}catch(e){rec=null;$("mic").classList.remove("rec")}
+};
+$("tv").onclick=()=>{$("tv").classList.toggle("on");document.body.classList.toggle("nov",!$("tv").classList.contains("on"))};
+$("back").onclick=()=>{try{speechSynthesis.cancel()}catch(e){}run++;idx=99;blank=null;cur={s:[]};home()};
+$("vb").onclick=()=>{$("vl").innerHTML=vocab.length?vocab.map(v=>`<div class="v"><div><b>${v.p}</b><div class="vi">${v.s}<br>${v.vi}</div></div><button class="chip" onclick="say('${v.p.replace(/'/g,"\\'")}')">🔊</button></div>`).join(""):'<p style="color:var(--sub)">Chưa có từ nào. Chạm vào cụm gạch chân trong tin nhắn để lưu.</p>';$("vocab").style.display="block"};
+$("vx").onclick=()=>$("vocab").style.display="none";
+$("vc").textContent=vocab.length;if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+home();
+</script>
+</body>
+</html>
